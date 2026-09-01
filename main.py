@@ -1,6 +1,6 @@
 """
 Facebook System Design — Full App Orchestrator
-================================================
+===============================================
 Ties together all 9 modules into a single unified simulation.
 
 Modules:
@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 import importlib.util
 
+
 def load(filename, alias):
     """Dynamically load a module from file."""
     filepath = os.path.join(os.path.dirname(__file__), filename)
@@ -30,6 +31,7 @@ def load(filename, alias):
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
+
 
 m1 = load("1_tao_graph.py", "tao")
 m2 = load("2_news_feed.py", "feed")
@@ -42,13 +44,19 @@ m8 = load("8_realtime_messaging.py", "msg")
 m9 = load("9_ads_engine.py", "ads")
 
 
+
 def divider(title):
     print(f"\n{'='*50}")
     print(f"  {title}")
     print(f"{'='*50}")
 
 
-if __name__ == "__main__":
+def run_all():
+    """Run the full orchestrator. This function can be imported and called from other programs.
+
+    It executes the same sequence previously run under __main__, but exposes a callable
+    entrypoint so background servers (like the Flask wrapper) can start the demo reliably.
+    """
 
     # ── 1. AUTH ──────────────────────────────
     divider("1. Authentication & Sessions")
@@ -221,3 +229,7 @@ if __name__ == "__main__":
     print("  ✅ Ads Engine           — auction, targeting, budget, freq cap")
     print()
     print("  All 9 modules running. Facebook decoded. 🚀")
+
+
+if __name__ == "__main__":
+    run_all()
